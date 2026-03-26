@@ -128,8 +128,8 @@ Jugador      1 ──── N  Goleador
 
 | Sprint | Período | HUs | Alcance |
 |---|---|---|---|
-| [Sprint 3](#sprint-3--tabla-de-posiciones-y-frontend-base) | Abr 16 → May 1 | HU-07, HU-08, HU-09 | Tabla de Posiciones, Frontend base |
-| [Sprint 4](#sprint-4--frontend-avanzado-integración-y-despliegue) | May 2 → May 15 | HU-09, HU-10 | Frontend avanzado, integración de flujos, Docker, README |
+| [Sprint 3](#sprint-3--resultados-goleadores-y-frontend-base) | Abr 16 → May 1 | HU-07, HU-08 | Registro de Resultados, Goleadores, Frontend base |
+| [Sprint 4](#sprint-4--tabla-de-posiciones-integración-y-despliegue) | May 2 → May 15 | HU-09, HU-10 | Tabla de Posiciones, Ranking, integración y despliegue |
 
 ---
 
@@ -288,15 +288,14 @@ Jugador      1 ──── N  Goleador
 
 ---
 
-### Sprint 3 — Tabla de posiciones y Frontend base
+### Sprint 3 — Resultados, Goleadores y Frontend base
 
 > 📅 **Abr 16 → May 1** · 📝 Entrega: 1 de Mayo
 
 | # | Historia de Usuario | Labels | Issue |
 |---|---|---|---|
-| HU-07 | Registrar Resultado con Marcador | `user-story` `backend` | <!-- TODO --> |
-| HU-08 | Registrar Goleadores del Partido | `user-story` `backend` | <!-- TODO --> |
-| HU-09 | Consultar Tabla de Posiciones | `user-story` `backend` `frontend` | <!-- TODO --> |
+| HU-07 | Registrar Resultado con Marcador | `user-story` `backend` `frontend` | <!-- TODO --> |
+| HU-08 | Registrar Goleadores del Partido | `user-story` `backend` `frontend` | <!-- TODO --> |
 
 **Entregables:**
 - Módulo de Resultado con actualización automática de tabla de posiciones
@@ -344,6 +343,25 @@ Jugador      1 ──── N  Goleador
 
 ---
 
+### Sprint 4 — Tabla de Posiciones, integración y despliegue
+
+> 📅 **May 2 → May 15** · 📝 Entrega: 15 de Mayo
+
+| # | Historia de Usuario | Labels | Issue |
+|---|---|---|---|
+| HU-09 | Consultar Tabla de Posiciones | `user-story` `backend` `frontend` | <!-- TODO --> |
+| HU-10 | Consultar Estadísticas y Ranking de Goleadores | `user-story` `backend` `frontend` | <!-- TODO --> |
+
+**Entregables:**
+- Tabla de posiciones responsiva con columnas ordenables
+- Ranking de goleadores con estadísticas individuales
+- Formularios con selects dinámicos encadenados (torneo → equipos → cancha)
+- Integración de flujos completos (crear torneo → registrar partidos → consultar tabla)
+- Pruebas de integración y Docker Compose validación final
+- README y documentación
+
+---
+
 #### HU-09 — Consultar Tabla de Posiciones (CU-05)
 
 > Como usuario, quiero consultar la tabla de posiciones actualizada del torneo, para conocer el ranking de equipos en tiempo real.
@@ -360,24 +378,6 @@ Jugador      1 ──── N  Goleador
 - Backend: Endpoint `GET /torneos/:id/tabla-posiciones` con ordenamiento en base de datos
 - Frontend: Página `/torneos/[id]/tabla` con tabla responsiva y columnas ordenables
 - Frontend: Selector de torneo con actualización dinámica de la tabla
-
----
-
-### Sprint 4 — Frontend avanzado, integración y despliegue
-
-> 📅 **May 2 → May 15** · 📝 Entrega: 15 de Mayo
-
-| # | Historia de Usuario | Labels | Issue |
-|---|---|---|---|
-| HU-10 | Consultar Estadísticas y Ranking de Goleadores | `user-story` `backend` `frontend` | <!-- TODO --> |
-
-**Entregables:**
-- Formularios con selects dinámicos encadenados (torneo → equipos → cancha)
-- Tabla de posiciones responsiva con columnas ordenables
-- Ranking de goleadores con estadísticas individuales
-- Integración de flujos completos (crear torneo → registrar partidos → consultar tabla)
-- Pruebas de integración y Docker Compose validación final
-- README y documentación
 
 ---
 
@@ -403,7 +403,7 @@ Jugador      1 ──── N  Goleador
 ## 📅 Cronograma
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│             RELEASE 1 — Segundo Corte · Sprints 1 y 2                      │
+│              RELEASE 1 — Segundo Corte · Sprints 1 y 2                     │
 ├──────────────────────────────┬──────────────────────────────────────────────┤
 │          Sprint 1            │              Sprint 2                        │
 │       Mar 25 → Abr 3        │           Abr 4 → Abr 15                    │
@@ -413,17 +413,16 @@ Jugador      1 ──── N  Goleador
 │  • Torneo (HU-01, HU-02)    │  • Partido (HU-05, HU-06)                  │
 │  • Equipo + Jugador (HU-03) │  • Resultado + Common Module (HU-04)        │
 ├──────────────────────────────┴──────────────────────────────────────────────┤
-│             RELEASE 2 — Tercer Corte · Sprints 3 y 4                       │
+│              RELEASE 2 — Tercer Corte · Sprints 3 y 4                      │
 ├──────────────────────────────┬──────────────────────────────────────────────┤
 │          Sprint 3            │              Sprint 4                        │
 │      Abr 16 → May 1         │           May 2 → May 15                    │
 │    📝 Entrega: 1 May        │        📝 Entrega: 15 May                   │
 │                              │                                              │
-│  • Resultado con marcador    │  • Ranking Goleadores (HU-10)              │
-│    (HU-07)                   │  • Integración flujos completos             │
-│  • Goleadores (HU-08)        │  • Pruebas de integración                  │
-│  • Tabla Posiciones (HU-09) │  • Docker Compose validación final          │
-│  • Frontend base             │  • README y documentación                   │
+│  • Resultado marcador (HU-07)│  • Tabla Posiciones (HU-09)               │
+│  • Goleadores (HU-08)        │  • Ranking Goleadores (HU-10)             │
+│  • Frontend base             │  • Integración flujos completos            │
+│                              │  • Docker Compose + README                 │
 └──────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
