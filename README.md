@@ -39,7 +39,7 @@ Una liga deportiva barrial organiza torneos cada semestre, pero el registro de e
 |---|---|
 | **Tipo** | Trabajo en clase — Nivel Intermedio |
 | **Entidades** | 7 entidades con relaciones (ver modelo de datos) |
-| **Historias de Usuario** | 10 HUs organizadas en 5 sprints |
+| **Historias de Usuario** | 10 HUs organizadas en 4 sprints |
 | **Releases** | 2 releases alineados con los cortes académicos |
 | **Casos de Uso** | 5 CUs (torneos, equipos, partidos, resultados, tabla) |
 
@@ -111,26 +111,25 @@ Jugador      1 ──── N  Goleador
 
 ### Release 1 — Segundo Corte: Backend + Frontend Base
 
-> **📅 Cierre: 17 de Abril de 2026** · Sprints 1, 2 y 3
+> **📅 Cierre: 15 de Abril de 2026** · Sprints 1 y 2
 
 **Objetivo:** Entregar la API REST completa con arquitectura en capas (Controller → Service → Repository) y el frontend con las vistas de CRUD para todas las entidades base.
 
 | Sprint | Período | HUs | Alcance |
 |---|---|---|---|
-| [Sprint 1](#sprint-1--infraestructura-y-entidades-base) | Mar 16 → Mar 29 | HU-01, HU-02, HU-03 | Docker, Prisma, Torneo, Equipo, Jugador |
-| [Sprint 2](#sprint-2--entidades-de-competencia-y-cross-cutting) | Mar 30 → Abr 10 | HU-04, HU-05, HU-06 | Cancha, Partido, Resultado, Common Module |
-| [Sprint 3](#sprint-3--tabla-de-posiciones-y-frontend-base) | Abr 13 → Abr 17 | HU-07, HU-08, HU-09 | Tabla de Posiciones, Frontend base |
+| [Sprint 1](#sprint-1--infraestructura-y-entidades-base) | Mar 25 → Abr 3 | HU-01, HU-02, HU-03 | Docker, Prisma, Torneo, Equipo, Jugador |
+| [Sprint 2](#sprint-2--entidades-de-competencia-y-cross-cutting) | Abr 4 → Abr 15 | HU-04, HU-05, HU-06 | Cancha, Partido, Resultado, Common Module |
 
 ### Release 2 — Tercer Corte: Integración y Despliegue
 
-> **📅 Cierre: 22 de Mayo de 2026** · Sprints 4 y 5
+> **📅 Cierre: 15 de Mayo de 2026** · Sprints 3 y 4
 
 **Objetivo:** Integración completa frontend ↔ backend, formularios avanzados con relaciones, registro de resultados desde la interfaz y despliegue funcional con Docker.
 
 | Sprint | Período | HUs | Alcance |
 |---|---|---|---|
-| [Sprint 4](#sprint-4--frontend-avanzado-e-integración) | Abr 20 → May 8 | HU-10 | Frontend listados, formularios, navegación y layout |
-| [Sprint 5](#sprint-5--cierre-y-despliegue) | May 11 → May 22 | HU-11 | Integración de flujos, pruebas, Docker Compose, README |
+| [Sprint 3](#sprint-3--tabla-de-posiciones-y-frontend-base) | Abr 16 → May 1 | HU-07, HU-08, HU-09 | Tabla de Posiciones, Frontend base |
+| [Sprint 4](#sprint-4--frontend-avanzado-integración-y-despliegue) | May 2 → May 15 | HU-09, HU-10 | Frontend avanzado, integración de flujos, Docker, README |
 
 ---
 
@@ -138,7 +137,7 @@ Jugador      1 ──── N  Goleador
 
 ### Sprint 1 — Infraestructura y entidades base
 
-> 📅 **Mar 16 → Mar 29** · 🚫 Festivo: Mar 23 (San José)
+> 📅 **Mar 25 → Abr 3** · 📝 Entrega: 3 de Abril
 
 | # | Historia de Usuario | Labels | Issue |
 |---|---|---|---|
@@ -216,7 +215,7 @@ Jugador      1 ──── N  Goleador
 
 ### Sprint 2 — Entidades de competencia y cross-cutting
 
-> 📅 **Mar 30 → Abr 10** · 🚫 Festivos: Abr 2-3 (Semana Santa)
+> 📅 **Abr 4 → Abr 15** · 📝 Entrega: 15 de Abril
 
 | # | Historia de Usuario | Labels | Issue |
 |---|---|---|---|
@@ -291,7 +290,7 @@ Jugador      1 ──── N  Goleador
 
 ### Sprint 3 — Tabla de posiciones y Frontend base
 
-> 📅 **Abr 13 → Abr 17** · 📝 Cierre Segundo Corte: Abr 17
+> 📅 **Abr 16 → May 1** · 📝 Entrega: 1 de Mayo
 
 | # | Historia de Usuario | Labels | Issue |
 |---|---|---|---|
@@ -300,7 +299,7 @@ Jugador      1 ──── N  Goleador
 | HU-09 | Consultar Tabla de Posiciones | `user-story` `backend` `frontend` | <!-- TODO --> |
 
 **Entregables:**
-- Módulo de Resultado con lógica de actualización automática de tabla de posiciones
+- Módulo de Resultado con actualización automática de tabla de posiciones
 - Módulo de Goleadores con validación de coherencia de marcador
 - Common Module global (filtros, interceptores, pipes)
 - Frontend: estructura Next.js, listados y formularios de entidades base
@@ -364,20 +363,21 @@ Jugador      1 ──── N  Goleador
 
 ---
 
-### Sprint 4 — Frontend avanzado e integración
+### Sprint 4 — Frontend avanzado, integración y despliegue
 
-> 📅 **Abr 20 → May 8** · 🚫 Festivo: May 1 (Día del Trabajo)
+> 📅 **May 2 → May 15** · 📝 Entrega: 15 de Mayo
 
 | # | Historia de Usuario | Labels | Issue |
 |---|---|---|---|
-| HU-10 | Consultar Estadísticas y Ranking de Goleadores | `user-story` `frontend` | <!-- TODO --> |
+| HU-10 | Consultar Estadísticas y Ranking de Goleadores | `user-story` `backend` `frontend` | <!-- TODO --> |
 
 **Entregables:**
 - Formularios con selects dinámicos encadenados (torneo → equipos → cancha)
 - Tabla de posiciones responsiva con columnas ordenables
 - Ranking de goleadores con estadísticas individuales
-- Layout general con sidebar/navbar y navegación entre secciones
-- Componentes de feedback (toast/alert de éxito/error)
+- Integración de flujos completos (crear torneo → registrar partidos → consultar tabla)
+- Pruebas de integración y Docker Compose validación final
+- README y documentación
 
 ---
 
@@ -400,65 +400,41 @@ Jugador      1 ──── N  Goleador
 
 ---
 
-### Sprint 5 — Cierre y despliegue
-
-> 📅 **May 11 → May 22** · 🚫 Festivo: May 18 (Día de la Ascensión) · 📝 Cierre Tercer Corte: May 22
-
-| # | Historia de Usuario | Labels | Issue |
-|---|---|---|---|
-| HU-11 | Integración Final y Despliegue con Docker | `user-story` `infraestructura` | <!-- TODO --> |
-
-**Entregables:**
-- Integración de flujos completos (crear torneo → registrar equipos → programar partidos → registrar resultados → consultar tabla)
-- Pruebas de integración
-- Docker Compose validación final
-- README y documentación
-
----
-
 ## 📅 Cronograma
 ```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│              SEGUNDO CORTE (Release 1) — Cierre: 17 Abr 2026               │
-│                        Backend + Frontend Base                              │
-├─────────────────────┬─────────────────────┬──────────────────────────────────┤
-│      Sprint 1       │      Sprint 2       │          Sprint 3               │
-│  Mar 16 → Mar 29    │  Mar 30 → Abr 10    │    Abr 13 → Abr 17             │
-│                     │                     │                                 │
-│ • Docker + Prisma   │ • Cancha            │ • Tabla de Posiciones           │
-│ • Torneo            │ • Partido           │ • Common Module                 │
-│ • Equipo            │ • Resultado         │ • Frontend: listados y forms    │
-│ • Jugador           │ • Filters/Pipes     │                                 │
-│                     │                     │                                 │
-│ 🚫 Mar 23          │ 🚫 Abr 2-3         │                                 │
-│   (San José)        │   (Semana Santa)    │                                 │
-├─────────────────────┴─────────────────────┴──────────────────────────────────┤
-│              TERCER CORTE (Release 2) — Cierre: 22 May 2026                │
-│                        Integración y Despliegue                            │
-├────────────────────────────────────┬─────────────────────────────────────────┤
-│          Sprint 4                  │             Sprint 5                   │
-│       Abr 20 → May 8              │          May 11 → May 22               │
-│                                    │                                        │
-│ • Frontend listados completos      │ • Integración de flujos               │
-│ • Formularios con selects          │ • Pruebas de integración              │
-│   dinámicos                        │ • Docker Compose validación           │
-│ • Ranking de goleadores            │ • README y documentación              │
-│ • Navegación y layout              │                                        │
-│                                    │                                        │
-│ 🚫 May 1                          │ 🚫 May 18                             │
-│   (Día del Trabajo)               │   (Día de la Ascensión)               │
-└────────────────────────────────────┴─────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│             RELEASE 1 — Segundo Corte · Sprints 1 y 2                      │
+├──────────────────────────────┬──────────────────────────────────────────────┤
+│          Sprint 1            │              Sprint 2                        │
+│       Mar 25 → Abr 3        │           Abr 4 → Abr 15                    │
+│    📝 Entrega: 3 Abr        │        📝 Entrega: 15 Abr                   │
+│                              │                                              │
+│  • Docker + Prisma           │  • Cancha                                   │
+│  • Torneo (HU-01, HU-02)    │  • Partido (HU-05, HU-06)                  │
+│  • Equipo + Jugador (HU-03) │  • Resultado + Common Module (HU-04)        │
+├──────────────────────────────┴──────────────────────────────────────────────┤
+│             RELEASE 2 — Tercer Corte · Sprints 3 y 4                       │
+├──────────────────────────────┬──────────────────────────────────────────────┤
+│          Sprint 3            │              Sprint 4                        │
+│      Abr 16 → May 1         │           May 2 → May 15                    │
+│    📝 Entrega: 1 May        │        📝 Entrega: 15 May                   │
+│                              │                                              │
+│  • Resultado con marcador    │  • Ranking Goleadores (HU-10)              │
+│    (HU-07)                   │  • Integración flujos completos             │
+│  • Goleadores (HU-08)        │  • Pruebas de integración                  │
+│  • Tabla Posiciones (HU-09) │  • Docker Compose validación final          │
+│  • Frontend base             │  • README y documentación                   │
+└──────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
-### Festivos Colombianos (Marzo — Mayo 2026)
+### Fechas de Entrega 2026
 
-| Fecha | Festivo | Sprint Afectado |
-|---|---|---|
-| Lunes 23 de Marzo | Día de San José | Sprint 1 |
-| Jueves 2 de Abril | Jueves Santo | Sprint 2 |
-| Viernes 3 de Abril | Viernes Santo | Sprint 2 |
-| Viernes 1 de Mayo | Día del Trabajo | Sprint 4 |
-| Lunes 18 de Mayo | Día de la Ascensión | Sprint 5 |
+| Fecha | Sprint |
+|---|---|
+| Viernes 3 de Abril | Sprint 1 |
+| Miércoles 15 de Abril | Sprint 2 |
+| Viernes 1 de Mayo | Sprint 3 |
+| Viernes 15 de Mayo | Sprint 4 |
 
 ---
 
