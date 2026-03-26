@@ -472,8 +472,7 @@ Cada Historia de Usuario se considera **terminada** cuando cumple **todos** los 
 
 ### Clonar el repositorio
 ```bash
-git clone https://github.com/equipos/gestion-torneos.git
-cd gestion-torneos
+https://github.com/avargas-2024a-del/Plataforma_de_Gesti-n_de_orneos_Deportivos.git
 ```
 
 ### Configurar variables de entorno
