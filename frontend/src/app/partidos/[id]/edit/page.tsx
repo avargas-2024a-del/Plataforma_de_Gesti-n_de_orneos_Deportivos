@@ -11,10 +11,12 @@ export default function EditPartidoPage() {
   const id = Number(params.id);
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
+  const [cancelling, setCancelling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [torneos, setTorneos] = useState<Torneo[]>([]);
   const [equipos, setEquipos] = useState<Equipo[]>([]);
   const [canchas, setCanchas] = useState<Cancha[]>([]);
+  const [estadoPartido, setEstadoPartido] = useState("");
   const [form, setForm] = useState<UpdatePartidoDto>({
     torneoId: 0,
     equipoLocalId: 0,
@@ -33,6 +35,7 @@ export default function EditPartidoPage() {
     ])
       .then(([partido, torneos, equipos, canchas]) => {
         setForm(partido);
+        setEstadoPartido(partido.estado);
         setTorneos(torneos);
         setEquipos(equipos);
         setCanchas(canchas);
@@ -43,6 +46,10 @@ export default function EditPartidoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (estadoPartido === "jugado") {
+      alert("No se puede editar un partido que ya tiene resultado registrado.");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -55,6 +62,23 @@ export default function EditPartidoPage() {
     }
   };
 
+  const handleCancelar = async () => {
+    if (estadoPartido === "jugado") {
+      alert("No se puede cancelar un partido que ya tiene resultado registrado.");
+      return;
+    }
+    if (!confirm("¿Cancelar este partido? Esta acción no se puede deshacer.")) return;
+    setCancelling(true);
+    try {
+      await partidosService.update(id, { ...form, estado: "cancelado" } as UpdatePartidoDto & { estado: string });
+      router.push("/partidos");
+    } catch {
+      alert("Error al cancelar el partido");
+    } finally {
+      setCancelling(false);
+    }
+  };
+
   if (loadingData) return <p className="p-8 text-center">Cargando...</p>;
 
   return (
@@ -63,6 +87,18 @@ export default function EditPartidoPage() {
         <h1 className="text-3xl font-bold">Editar Partido</h1>
         <Link href={`/partidos/${id}`} className="text-gray-500 hover:underline">← Volver</Link>
       </div>
+
+      {estadoPartido === "jugado" && (
+        <div className="mb-4 p-4 bg-red-50 border border-red-300 rounded text-red-700">
+          ⚠️ Este partido ya tiene resultado registrado. No se puede editar ni cancelar.
+        </div>
+      )}
+
+      {estadoPartido === "cancelado" && (
+        <div className="mb-4 p-4 bg-yellow-50 border border-yellow-300 rounded text-yellow-700">
+          ⚠️ Este partido está cancelado.
+        </div>
+      )}
 
       {error && <p className="mb-4 text-red-500">{error}</p>}
 
@@ -74,6 +110,7 @@ export default function EditPartidoPage() {
             value={form.torneoId ?? 0}
             onChange={(e) => setForm({ ...form, torneoId: Number(e.target.value) })}
             className="w-full border rounded px-3 py-2"
+            disabled={estadoPartido === "jugado"}
           >
             <option value={0}>Seleccionar torneo...</option>
             {torneos.map((t) => (
@@ -89,6 +126,7 @@ export default function EditPartidoPage() {
             value={form.equipoLocalId ?? 0}
             onChange={(e) => setForm({ ...form, equipoLocalId: Number(e.target.value) })}
             className="w-full border rounded px-3 py-2"
+            disabled={estadoPartido === "jugado"}
           >
             <option value={0}>Seleccionar equipo...</option>
             {equipos.map((e) => (
@@ -104,6 +142,7 @@ export default function EditPartidoPage() {
             value={form.equipoVisitanteId ?? 0}
             onChange={(e) => setForm({ ...form, equipoVisitanteId: Number(e.target.value) })}
             className="w-full border rounded px-3 py-2"
+            disabled={estadoPartido === "jugado"}
           >
             <option value={0}>Seleccionar equipo...</option>
             {equipos.map((e) => (
@@ -119,6 +158,7 @@ export default function EditPartidoPage() {
             value={form.canchaId ?? 0}
             onChange={(e) => setForm({ ...form, canchaId: Number(e.target.value) })}
             className="w-full border rounded px-3 py-2"
+            disabled={estadoPartido === "jugado"}
           >
             <option value={0}>Seleccionar cancha...</option>
             {canchas.map((c) => (
@@ -135,6 +175,7 @@ export default function EditPartidoPage() {
             value={form.fecha ?? ""}
             onChange={(e) => setForm({ ...form, fecha: e.target.value })}
             className="w-full border rounded px-3 py-2"
+            disabled={estadoPartido === "jugado"}
           />
         </div>
 
@@ -146,16 +187,27 @@ export default function EditPartidoPage() {
             value={form.hora ?? ""}
             onChange={(e) => setForm({ ...form, hora: e.target.value })}
             className="w-full border rounded px-3 py-2"
+            disabled={estadoPartido === "jugado"}
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Guardando..." : "Guardar Cambios"}
-        </button>
+        <div className="flex gap-3">
+          <button
+            type="submit"
+            disabled={loading || estadoPartido === "jugado"}
+            className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+          >
+            {loading ? "Guardando..." : "Guardar Cambios"}
+          </button>
+          <button
+            type="button"
+            onClick={handleCancelar}
+            disabled={cancelling || estadoPartido === "jugado" || estadoPartido === "cancelado"}
+            className="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700 disabled:opacity-50"
+          >
+            {cancelling ? "Cancelando..." : "Cancelar Partido"}
+          </button>
+        </div>
       </form>
     </div>
   );
