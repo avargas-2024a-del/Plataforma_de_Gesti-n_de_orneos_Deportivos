@@ -1,0 +1,147 @@
+// ============================================================
+// Prisma Schema — Plataforma de Gestión de Torneos Deportivos
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENTIDAD: Torneo
+// ============================================================
+model Torneo {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  deporte      String
+  fechaInicio  DateTime
+  fechaFin     DateTime
+  formato      String
+  activo       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  equipos   Equipo[]
+  partidos  Partido[]
+
+  @@map("torneos")
+}
+
+// ============================================================
+// ENTIDAD: Equipo
+// ============================================================
+model Equipo {
+  id             Int    @id @default(autoincrement())
+  nombre         String
+  escudo         String
+  directorTecnico String
+  torneoId       Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  torneo           Torneo    @relation(fields: [torneoId], references: [id])
+  jugadores        Jugador[]
+  partidosLocal    Partido[] @relation("EquipoLocal")
+  partidosVisitante Partido[] @relation("EquipoVisitante")
+
+  @@map("equipos")
+}
+
+// ============================================================
+// ENTIDAD: Jugador
+// ============================================================
+model Jugador {
+  id              Int      @id @default(autoincrement())
+  nombres         String
+  apellidos       String
+  dorsal          Int
+  posicion        String
+  fechaNacimiento DateTime
+  equipoId        Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  equipo    Equipo     @relation(fields: [equipoId], references: [id])
+  goleadores Goleador[]
+
+  @@unique([dorsal, equipoId])
+  @@map("jugadores")
+}
+
+// ============================================================
+// ENTIDAD: Cancha
+// ============================================================
+model Cancha {
+  id            Int    @id @default(autoincrement())
+  nombre        String
+  direccion     String
+  tipoSuperficie String
+  capacidad     Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  partidos Partido[]
+
+  @@map("canchas")
+}
+
+// ============================================================
+// ENTIDAD: Partido
+// ============================================================
+model Partido {
+  id               Int      @id @default(autoincrement())
+  torneoId         Int
+  equipoLocalId    Int
+  equipoVisitanteId Int
+  canchaId         Int
+  fecha            DateTime
+  hora             String
+  estado           String   @default("programado")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  torneo          Torneo    @relation(fields: [torneoId], references: [id])
+  equipoLocal     Equipo    @relation("EquipoLocal", fields: [equipoLocalId], references: [id])
+  equipoVisitante Equipo    @relation("EquipoVisitante", fields: [equipoVisitanteId], references: [id])
+  cancha          Cancha    @relation(fields: [canchaId], references: [id])
+  resultado       Resultado?
+
+  @@map("partidos")
+}
+
+// ============================================================
+// ENTIDAD: Resultado
+// ============================================================
+model Resultado {
+  id             Int @id @default(autoincrement())
+  partidoId      Int @unique
+  golesLocal     Int
+  golesVisitante Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  partido    Partido    @relation(fields: [partidoId], references: [id])
+  goleadores Goleador[]
+
+  @@map("resultados")
+}
+
+// ============================================================
+// ENTIDAD: Goleador
+// ============================================================
+model Goleador {
+  id         Int @id @default(autoincrement())
+  resultadoId Int
+  jugadorId  Int
+  cantidad   Int
+  createdAt  DateTime @default(now())
+
+  resultado Resultado @relation(fields: [resultadoId], references: [id])
+  jugador   Jugador   @relation(fields: [jugadorId], references: [id])
+
+  @@map("goleadores")
+}
