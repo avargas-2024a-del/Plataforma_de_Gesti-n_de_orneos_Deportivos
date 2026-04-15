@@ -205,4 +205,5 @@ model Goleador {
   jugador   Jugador   @relation(fields: [jugadorId], references: [id])
   // Relacion hacia el jugador que anoto
 
-  @@map("goleadores")  // Nombre real de la tabla en PostgreSQL  }
+  @@map("goleadores")  // Nombre real de la tabla en PostgreSQL 
+   }
