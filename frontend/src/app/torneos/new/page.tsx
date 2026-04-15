@@ -62,7 +62,7 @@ export default function NewTorneoPage() {
             required
           >
             <option value="">Seleccionar...</option>
-            <option value="fútbol">Fútbol</option>
+            <option value="futbol">Fútbol</option>
             <option value="baloncesto">Baloncesto</option>
             <option value="voleibol">Voleibol</option>
           </select>
