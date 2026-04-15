@@ -23,7 +23,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/generated ./generated
+
 COPY prisma ./prisma
 
 EXPOSE 3001
