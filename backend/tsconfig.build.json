@@ -1,13 +1,40 @@
 {
+  // ============================================================
+  // tsconfig.build.json — Configuracion de compilacion para produccion
+  // Este archivo extiende tsconfig.json y agrega ajustes especificos
+  // para cuando se construye el proyecto con: npm run build
+  // ============================================================
+
   "extends": "./tsconfig.json",
+  // Hereda todas las opciones de tsconfig.json
+  // Solo se sobreescriben o agregan las opciones que se definen aqui abajo
+
   "compilerOptions": {
     "incremental": false
+    // Desactiva la compilacion incremental para produccion
+    // En desarrollo (tsconfig.json) esta en true para compilar mas rapido
+    // En produccion se desactiva para garantizar una compilacion limpia y completa
+    // sin depender de caches anteriores
   },
+
   "exclude": [
+    // Carpetas y archivos que el compilador debe IGNORAR al construir para produccion
+
     "node_modules",
+    // Excluye las dependencias externas; nunca se deben compilar
+
     "test",
+    // Excluye la carpeta de pruebas; los tests no van al build de produccion
+
     "dist",
+    // Excluye la carpeta de salida; evita que el compilador se compile a si mismo
+
     "**/*spec.ts",
+    // Excluye todos los archivos de pruebas unitarias (*.spec.ts) en cualquier carpeta
+    // El ** significa "en cualquier nivel de carpetas"
+
     "prisma.config.ts"
+    // Excluye el archivo de configuracion de Prisma
+    // Este archivo es solo para configuracion local, no hace parte del build
   ]
 }
