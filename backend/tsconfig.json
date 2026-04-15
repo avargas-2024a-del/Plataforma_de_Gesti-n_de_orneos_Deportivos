@@ -1,21 +1,86 @@
 {
   "compilerOptions": {
+    // ============================================================
+    // tsconfig.json — Configuracion del compilador TypeScript
+    // Este archivo le dice a TypeScript como debe compilar el codigo
+    // NestJS genera este archivo automaticamente al crear el proyecto
+    // ============================================================
+
     "module": "commonjs",
+    // Sistema de modulos que usa Node.js
+    // CommonJS usa require() y module.exports internamente
+    // NestJS lo requiere para funcionar correctamente
+
     "declaration": true,
+    // Genera archivos .d.ts junto con el JavaScript compilado
+    // Los .d.ts contienen los tipos para que otros modulos puedan usarlos
+
     "removeComments": true,
+    // Elimina todos los comentarios del codigo JavaScript generado en /dist
+    // El codigo fuente en /src conserva los comentarios, solo los quita al compilar
+
     "emitDecoratorMetadata": true,
+    // Necesario para que funcionen los decoradores de NestJS como @Injectable()
+    // Permite que TypeScript emita metadatos sobre los tipos en tiempo de ejecucion
+    // Sin esta opcion los decoradores de NestJS no funcionan
+
     "experimentalDecorators": true,
+    // Habilita el uso de decoradores en TypeScript (son "experimentales" segun el estandar)
+    // NestJS los usa en todas partes: @Controller(), @Get(), @Body(), @Module(), etc.
+    // Sin esta opcion el proyecto NestJS no compila
+
     "allowSyntheticDefaultImports": true,
+    // Permite escribir: import express from 'express'
+    // En lugar de: import * as express from 'express'
+    // Hace las importaciones mas limpias y compatibles con el estilo moderno
+
     "target": "ES2021",
+    // Version de JavaScript a la que se compila el codigo TypeScript
+    // ES2021 es compatible con versiones modernas de Node.js
+    // Permite usar features modernas como Promise.allSettled, operadores logicos, etc.
+
     "sourceMap": true,
+    // Genera archivos .map que conectan el JS compilado con el TS original
+    // Util para depuracion: cuando hay un error en /dist, el debugger
+    // te muestra la linea correspondiente en /src
+
     "outDir": "./dist",
+    // Carpeta de salida donde se guarda el JavaScript compilado
+    // Cuando ejecutas npm run build, el resultado va a esta carpeta
+
     "rootDir": "./src",
+    // Carpeta raiz del codigo fuente TypeScript
+    // El compilador solo procesa archivos dentro de /src
+
     "incremental": true,
+    // Compilacion incremental: solo recompila los archivos que cambiaron
+    // Hace que las compilaciones sucesivas sean mas rapidas
+    // Guarda un cache en el archivo tsconfig.tsbuildinfo
+
     "skipLibCheck": true,
+    // Omite la verificacion de tipos en los archivos .d.ts de node_modules
+    // Acelera la compilacion y evita errores de librerias externas mal tipadas
+
     "strictNullChecks": false,
+    // Desactivado: permite asignar null y undefined a cualquier tipo sin error
+    // Si estuviera en true, TypeScript exigiria manejar explicitamente los nulls
+    // NestJS lo desactiva para simplificar el desarrollo inicial
+
     "noImplicitAny": false,
+    // Desactivado: permite variables sin tipo explicito (TypeScript infiere 'any')
+    // Si estuviera en true, cada variable sin tipo causaria un error de compilacion
+    // Util para proyectos que migran de JavaScript a TypeScript gradualmente
+
     "strictBindCallApply": false,
+    // Desactivado: no verifica estrictamente los tipos en .bind(), .call() y .apply()
+    // Evita errores en codigo que usa estas funciones con tipos genericos
+
     "forceConsistentCasingInFileNames": false,
+    // Desactivado: no obliga a que las importaciones respeten mayusculas/minusculas
+    // Ejemplo: import './MiArchivo' y import './miarchivo' serian equivalentes
+
     "noFallthroughCasesInSwitch": false
+    // Desactivado: permite que un case de switch continue al siguiente sin break
+    // Si estuviera en true, cada case necesitaria break o return obligatoriamente
   }
 }
