@@ -1,209 +1,148 @@
 // ============================================================
 // Prisma Schema — Plataforma de Gestión de Torneos Deportivos
 // ============================================================
-// Este archivo es el corazón de la base de datos con Prisma
-// Define los modelos (tablas), sus campos y las relaciones entre ellos
-// A partir de este archivo Prisma genera: la migración SQL y el cliente TypeScript
-// ============================================================
 
 generator client {
-  provider = "prisma-client-js"          // Genera el cliente para usar en TypeScript/NestJS
-  output   = "../node_modules/.prisma/client"  // Carpeta donde se genera el cliente
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"                // Motor de base de datos: PostgreSQL
-  // La URL de conexión se lee desde la variable DATABASE_URL del archivo .env
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ============================================================
 // ENTIDAD: Torneo
-// Tabla principal del sistema
-// Un torneo tiene muchos equipos y muchos partidos
 // ============================================================
 model Torneo {
-  id           Int      @id @default(autoincrement())  // Llave primaria autoincremental
-  nombre       String                                   // Nombre del torneo
-  deporte      String                                   // Deporte: futbol, baloncesto, voleibol
-  fechaInicio  DateTime                                 // Fecha de inicio del torneo
-  fechaFin     DateTime                                 // Fecha de fin del torneo
-  formato      String                                   // Formato: liga o eliminacion
-  activo       Boolean  @default(true)                  // Si el torneo esta activo; true por defecto
-  createdAt    DateTime @default(now())                 // Fecha de creacion, la asigna Prisma automaticamente
-  updatedAt    DateTime @updatedAt                      // Fecha de actualizacion, Prisma la actualiza sola
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  deporte      String
+  fechaInicio  DateTime
+  fechaFin     DateTime
+  formato      String
+  activo       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  // Relaciones: un torneo tiene muchos equipos y muchos partidos
-  equipos   Equipo[]   // Un torneo tiene N equipos
-  partidos  Partido[]  // Un torneo tiene N partidos
+  equipos   Equipo[]
+  partidos  Partido[]
 
-  @@map("torneos")     // Nombre real de la tabla en PostgreSQL
+  @@map("torneos")
 }
 
 // ============================================================
 // ENTIDAD: Equipo
-// Cada equipo pertenece a un torneo
-// Un equipo puede jugar muchos partidos como local o como visitante
 // ============================================================
 model Equipo {
-  id             Int    @id @default(autoincrement())  // Llave primaria autoincremental
-  nombre         String                                 // Nombre del equipo
-  escudo         String                                 // URL de la imagen del escudo
-  directorTecnico String                                // Nombre del director tecnico
-  torneoId       Int                                    // FK: id del torneo al que pertenece
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  nombre          String
+  escudo          String
+  directorTecnico String
+  torneoId        Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  // Relaciones
-  torneo           Torneo    @relation(fields: [torneoId], references: [id])
-  // torneo: relacion hacia Torneo usando torneoId como FK
-
-  jugadores        Jugador[]
-  // Un equipo tiene N jugadores
-
-  partidosLocal    Partido[] @relation("EquipoLocal")
-  // Partidos donde este equipo juega de LOCAL
-  // El nombre "EquipoLocal" conecta con la relacion del mismo nombre en Partido
-
+  torneo            Torneo    @relation(fields: [torneoId], references: [id])
+  jugadores         Jugador[]
+  partidosLocal     Partido[] @relation("EquipoLocal")
   partidosVisitante Partido[] @relation("EquipoVisitante")
-  // Partidos donde este equipo juega de VISITANTE
-  // El nombre "EquipoVisitante" conecta con la relacion del mismo nombre en Partido
-  // Se usan nombres distintos porque ambas FK apuntan a la misma tabla Equipo
 
-  @@map("equipos")   // Nombre real de la tabla en PostgreSQL
+  @@map("equipos")
 }
 
 // ============================================================
 // ENTIDAD: Jugador
-// Cada jugador pertenece a un equipo
-// Un jugador puede ser goleador en varios partidos
 // ============================================================
 model Jugador {
   id              Int      @id @default(autoincrement())
-  nombres         String                                  // Nombres del jugador
-  apellidos       String                                  // Apellidos del jugador
-  dorsal          Int                                     // Numero de camiseta
-  posicion        String                                  // Posicion: portero, delantero, etc.
-  fechaNacimiento DateTime                                // Fecha de nacimiento
-  equipoId        Int                                     // FK: id del equipo al que pertenece
+  nombres         String
+  apellidos       String
+  dorsal          Int
+  posicion        String
+  fechaNacimiento DateTime
+  equipoId        Int
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  // Relaciones
-  equipo    Equipo     @relation(fields: [equipoId], references: [id])
-  // equipo: relacion hacia Equipo usando equipoId como FK
-
+  equipo     Equipo     @relation(fields: [equipoId], references: [id])
   goleadores Goleador[]
-  // Un jugador puede tener N registros de goleador en distintos partidos
 
   @@unique([dorsal, equipoId])
-  // Restriccion: el dorsal debe ser unico dentro de cada equipo
-  // Permite dorsal 10 en equipo A y dorsal 10 en equipo B, pero no dos dorsal 10 en el mismo equipo
-
-  @@map("jugadores")  // Nombre real de la tabla en PostgreSQL
+  @@map("jugadores")
 }
 
 // ============================================================
 // ENTIDAD: Cancha
-// Entidad independiente: no depende de torneo ni equipo
-// Una cancha puede ser usada en muchos partidos
 // ============================================================
 model Cancha {
-  id            Int    @id @default(autoincrement())
-  nombre        String                                // Nombre de la cancha
-  direccion     String                                // Direccion fisica
-  tipoSuperficie String                               // Tipo: cesped, cemento, sintetico, etc.
-  capacidad     Int                                   // Aforo maximo de espectadores
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  nombre         String
+  direccion      String
+  tipoSuperficie String
+  capacidad      Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  // Relaciones
   partidos Partido[]
-  // Una cancha puede tener N partidos jugados en ella
 
-  @@map("canchas")  // Nombre real de la tabla en PostgreSQL
+  @@map("canchas")
 }
 
 // ============================================================
 // ENTIDAD: Partido
-// Entidad mas relacionada del sistema
-// Conecta: un torneo, dos equipos (local y visitante) y una cancha
 // ============================================================
 model Partido {
-  id               Int      @id @default(autoincrement())
-  torneoId         Int                                     // FK: torneo al que pertenece
-  equipoLocalId    Int                                     // FK: equipo que juega de local
-  equipoVisitanteId Int                                    // FK: equipo que juega de visitante
-  canchaId         Int                                     // FK: cancha donde se juega
-  fecha            DateTime                                // Fecha del partido
-  hora             String                                  // Hora en texto (ej: "15:00")
-  estado           String   @default("programado")         // Estado: programado | jugado | cancelado
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  torneoId          Int
+  equipoLocalId     Int
+  equipoVisitanteId Int
+  canchaId          Int
+  fecha             DateTime
+  hora              String
+  estado            String   @default("programado")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  // Relaciones
   torneo          Torneo    @relation(fields: [torneoId], references: [id])
-  // Relacion hacia el torneo
-
   equipoLocal     Equipo    @relation("EquipoLocal", fields: [equipoLocalId], references: [id])
-  // Relacion hacia el equipo local usando el nombre "EquipoLocal"
-  // Este nombre debe coincidir exactamente con el usado en el modelo Equipo
-
   equipoVisitante Equipo    @relation("EquipoVisitante", fields: [equipoVisitanteId], references: [id])
-  // Relacion hacia el equipo visitante usando el nombre "EquipoVisitante"
-  // Prisma exige nombres distintos porque hay dos FK hacia la misma tabla Equipo
-
   cancha          Cancha    @relation(fields: [canchaId], references: [id])
-  // Relacion hacia la cancha
-
   resultado       Resultado?
-  // Relacion 1 a 1 opcional: un partido puede tener 0 o 1 resultado
-  // El signo ? indica que es opcional (el partido puede no tener resultado aun)
 
-  @@map("partidos")  // Nombre real de la tabla en PostgreSQL
+  @@map("partidos")
 }
 
 // ============================================================
 // ENTIDAD: Resultado
-// Relacion 1 a 1 con Partido
-// Registra el marcador final del partido
 // ============================================================
 model Resultado {
-  id             Int @id @default(autoincrement())
-  partidoId      Int @unique                        // FK unica: garantiza relacion 1 a 1 con Partido
-  golesLocal     Int                                // Goles del equipo local
-  golesVisitante Int                                // Goles del equipo visitante
+  id             Int      @id @default(autoincrement())
+  partidoId      Int      @unique
+  golesLocal     Int
+  golesVisitante Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  // Relaciones
   partido    Partido    @relation(fields: [partidoId], references: [id])
-  // Relacion hacia el partido; @unique en partidoId garantiza que sea 1 a 1
-
   goleadores Goleador[]
-  // Un resultado puede tener N goleadores registrados
 
-  @@map("resultados")  // Nombre real de la tabla en PostgreSQL
+  @@map("resultados")
 }
 
 // ============================================================
 // ENTIDAD: Goleador
-// Tabla intermedia que registra cuantos goles anoto cada jugador en un partido
-// Un resultado puede tener N goleadores, y un jugador puede ser goleador en N partidos
 // ============================================================
 model Goleador {
-  id         Int @id @default(autoincrement())
-  resultadoId Int                               // FK: resultado del partido al que pertenece
-  jugadorId  Int                                // FK: jugador que anoto
-  cantidad   Int                                // Numero de goles anotados en ese partido
-  createdAt  DateTime @default(now())
-  // No tiene updatedAt: un registro de goleador no se actualiza, se elimina y recrea
+  id          Int      @id @default(autoincrement())
+  resultadoId Int
+  jugadorId   Int
+  cantidad    Int
+  createdAt   DateTime @default(now())
 
-  // Relaciones
   resultado Resultado @relation(fields: [resultadoId], references: [id])
-  // Relacion hacia el resultado del partido
-
   jugador   Jugador   @relation(fields: [jugadorId], references: [id])
-  // Relacion hacia el jugador que anoto
 
-  @@map("goleadores")  // Nombre real de la tabla en PostgreSQL 
-   }
+  @@map("goleadores")
+}
