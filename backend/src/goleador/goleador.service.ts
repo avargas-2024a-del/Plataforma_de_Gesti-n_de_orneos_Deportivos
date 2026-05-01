@@ -71,4 +71,48 @@ export class GoleadorService {
     await this.findOne(id);
     return this.prisma.goleador.delete({ where: { id } });
   }
+
+  async rankingGoleadores(torneoId: number) {
+    const goleadores = await this.prisma.goleador.findMany({
+      include: {
+        jugador: {
+          include: {
+            equipo: true,
+          },
+        },
+        resultado: {
+          include: {
+            partido: true,
+          },
+        },
+      },
+    });
+
+    const filtrados = goleadores.filter(
+      (g) => g.resultado.partido.torneoId === torneoId,
+    );
+
+    const ranking = new Map<number, {
+      jugador: string;
+      equipo: string;
+      goles: number;
+    }>();
+
+    filtrados.forEach((g) => {
+      const existing = ranking.get(g.jugadorId);
+      if (existing) {
+        existing.goles += g.cantidad;
+      } else {
+        ranking.set(g.jugadorId, {
+          jugador: `${g.jugador.nombres} ${g.jugador.apellidos}`,
+          equipo: g.jugador.equipo.nombre,
+          goles: g.cantidad,
+        });
+      }
+    });
+
+    return Array.from(ranking.values())
+      .sort((a, b) => b.goles - a.goles)
+      .map((item, index) => ({ posicion: index + 1, ...item }));
+  }
 }
