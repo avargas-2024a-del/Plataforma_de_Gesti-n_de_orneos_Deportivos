@@ -17,4 +17,5 @@ export const goleadoresService = {
   create: (data: CreateGoleadorDto) => api.post<Goleador>("/goleador", data),
   update: (id: number, data: UpdateGoleadorDto) => api.put<Goleador>(`/goleador/${id}`, data),
   remove: (id: number) => api.delete<void>(`/goleador/${id}`),
+  rankingByTorneo: (torneoId: number) => api.get<any[]>(`/goleador/ranking/${torneoId}`),
 };
