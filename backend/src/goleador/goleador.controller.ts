@@ -17,6 +17,11 @@ export class GoleadorController {
     return this.goleadorService.findAll();
   }
 
+  @Get('ranking/:torneoId')
+  rankingGoleadores(@Param('torneoId', ParseIntPipe) torneoId: number) {
+    return this.goleadorService.rankingGoleadores(torneoId);
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.goleadorService.findOne(id);
