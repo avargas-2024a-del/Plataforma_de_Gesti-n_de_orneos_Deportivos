@@ -19,4 +19,5 @@ export const torneosService = {
   create: (data: CreateTorneoDto) => api.post<Torneo>("/torneo", data),
   update: (id: number, data: UpdateTorneoDto) => api.put<Torneo>(`/torneo/${id}`, data),
   remove: (id: number) => api.delete<void>(`/torneo/${id}`),
+  tablaPosiciones: (id: number) => api.get<any[]>(`/torneo/${id}/tabla-posiciones`),
 };
