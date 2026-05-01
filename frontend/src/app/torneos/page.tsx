@@ -31,7 +31,7 @@ export default function TorneosPage() {
   if (error) return <p className="p-8 text-center text-red-500">{error}</p>;
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-8 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Torneos</h1>
         <Link
@@ -51,8 +51,6 @@ export default function TorneosPage() {
               <th className="border p-3 text-left">Nombre</th>
               <th className="border p-3 text-left">Deporte</th>
               <th className="border p-3 text-left">Formato</th>
-              <th className="border p-3 text-left">Fecha Inicio</th>
-              <th className="border p-3 text-left">Fecha Fin</th>
               <th className="border p-3 text-left">Estado</th>
               <th className="border p-3 text-left">Acciones</th>
             </tr>
@@ -63,17 +61,19 @@ export default function TorneosPage() {
                 <td className="border p-3">{torneo.nombre}</td>
                 <td className="border p-3">{torneo.deporte}</td>
                 <td className="border p-3 capitalize">{torneo.formato}</td>
-                <td className="border p-3">{torneo.fechaInicio}</td>
-                <td className="border p-3">{torneo.fechaFin}</td>
                 <td className="border p-3">
                   <span className={`px-2 py-1 rounded text-sm ${torneo.activo ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
                     {torneo.activo ? "Activo" : "Inactivo"}
                   </span>
                 </td>
-                <td className="border p-3 space-x-2">
-                  <Link href={`/torneos/${torneo.id}`} className="text-blue-600 hover:underline">Ver</Link>
-                  <Link href={`/torneos/${torneo.id}/edit`} className="text-yellow-600 hover:underline">Editar</Link>
-                  <button onClick={() => handleDelete(torneo.id)} className="text-red-600 hover:underline">Eliminar</button>
+                <td className="border p-3">
+                  <div className="flex flex-wrap gap-2">
+                    <Link href={`/torneos/${torneo.id}`} className="text-blue-600 hover:underline">Ver</Link>
+                    <Link href={`/torneos/${torneo.id}/edit`} className="text-yellow-600 hover:underline">Editar</Link>
+                    <Link href={`/torneos/${torneo.id}/tabla`} className="text-green-600 hover:underline">Tabla</Link>
+                    <Link href={`/torneos/${torneo.id}/goleadores`} className="text-purple-600 hover:underline">Goleadores</Link>
+                    <button onClick={() => handleDelete(torneo.id)} className="text-red-600 hover:underline">Eliminar</button>
+                  </div>
                 </td>
               </tr>
             ))}
