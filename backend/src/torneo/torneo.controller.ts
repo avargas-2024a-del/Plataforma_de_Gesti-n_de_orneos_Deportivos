@@ -17,6 +17,11 @@ export class TorneoController {
     return this.torneoService.findAll();
   }
 
+  @Get(':id/tabla-posiciones')
+  tablaPosiciones(@Param('id', ParseIntPipe) id: number) {
+    return this.torneoService.tablaPosiciones(id);
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.torneoService.findOne(id);
