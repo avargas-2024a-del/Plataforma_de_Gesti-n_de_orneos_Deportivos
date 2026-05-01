@@ -9,6 +9,9 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+
+ENV DATABASE_URL="postgresql://postgres:postgres@postgres:5432/torneos_deportivos?schema=public"
+
 RUN npx prisma generate
 RUN npm run build
 
@@ -20,7 +23,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# Copiar cliente Prisma generado y el build
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/dist ./dist
 
