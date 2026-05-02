@@ -25,11 +25,12 @@ export default function EditTorneoPage() {
     torneosService
       .findOne(id)
       .then((torneo) => setForm({
-        ...torneo,
+        nombre: torneo.nombre,
         deporte: torneo.deporte?.toLowerCase(),
         formato: torneo.formato?.toLowerCase() as "liga" | "eliminacion",
         fechaInicio: torneo.fechaInicio ? torneo.fechaInicio.toString().split('T')[0] : "",
         fechaFin: torneo.fechaFin ? torneo.fechaFin.toString().split('T')[0] : "",
+        activo: torneo.activo,
       }))
       .catch(() => setError("Error al cargar el torneo"))
       .finally(() => setLoadingData(false));
@@ -41,9 +42,12 @@ export default function EditTorneoPage() {
     setError(null);
     try {
       await torneosService.update(id, {
-        ...form,
+        nombre: form.nombre,
         deporte: form.deporte?.toLowerCase(),
         formato: form.formato?.toLowerCase() as "liga" | "eliminacion",
+        fechaInicio: form.fechaInicio,
+        fechaFin: form.fechaFin,
+        activo: form.activo,
       });
       router.push(`/torneos/${id}`);
     } catch {
