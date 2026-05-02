@@ -24,7 +24,11 @@ export default function EditTorneoPage() {
   useEffect(() => {
     torneosService
       .findOne(id)
-      .then((torneo) => setForm(torneo))
+      .then((torneo) => setForm({
+        ...torneo,
+        fechaInicio: torneo.fechaInicio ? torneo.fechaInicio.toString().split('T')[0] : "",
+        fechaFin: torneo.fechaFin ? torneo.fechaFin.toString().split('T')[0] : "",
+      }))
       .catch(() => setError("Error al cargar el torneo"))
       .finally(() => setLoadingData(false));
   }, [id]);
