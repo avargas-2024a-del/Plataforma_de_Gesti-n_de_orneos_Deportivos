@@ -26,6 +26,8 @@ export default function EditTorneoPage() {
       .findOne(id)
       .then((torneo) => setForm({
         ...torneo,
+        deporte: torneo.deporte?.toLowerCase(),
+        formato: torneo.formato?.toLowerCase() as "liga" | "eliminacion",
         fechaInicio: torneo.fechaInicio ? torneo.fechaInicio.toString().split('T')[0] : "",
         fechaFin: torneo.fechaFin ? torneo.fechaFin.toString().split('T')[0] : "",
       }))
@@ -38,7 +40,11 @@ export default function EditTorneoPage() {
     setLoading(true);
     setError(null);
     try {
-      await torneosService.update(id, form);
+      await torneosService.update(id, {
+        ...form,
+        deporte: form.deporte?.toLowerCase(),
+        formato: form.formato?.toLowerCase() as "liga" | "eliminacion",
+      });
       router.push(`/torneos/${id}`);
     } catch {
       setError("Error al actualizar el torneo");
@@ -79,7 +85,7 @@ export default function EditTorneoPage() {
             required
           >
             <option value="">Seleccionar...</option>
-            <option value="fútbol">Fútbol</option>
+            <option value="futbol">Fútbol</option>
             <option value="baloncesto">Baloncesto</option>
             <option value="voleibol">Voleibol</option>
           </select>
