@@ -24,14 +24,20 @@ export default function EditTorneoPage() {
   useEffect(() => {
     torneosService
       .findOne(id)
-      .then((torneo) => setForm({
-        nombre: torneo.nombre,
-        deporte: torneo.deporte?.toLowerCase(),
-        formato: torneo.formato?.toLowerCase() as "liga" | "eliminacion",
-        fechaInicio: torneo.fechaInicio ? torneo.fechaInicio.toString().split('T')[0] : "",
-        fechaFin: torneo.fechaFin ? torneo.fechaFin.toString().split('T')[0] : "",
-        activo: torneo.activo,
-      }))
+      .then((torneo) => {
+        const fechaInicio = torneo.fechaInicio ? new Date(torneo.fechaInicio).toISOString().split('T')[0] : "";
+        const fechaFin = torneo.fechaFin ? new Date(torneo.fechaFin).toISOString().split('T')[0] : "";
+        console.log("fechaInicio:", fechaInicio);
+        console.log("fechaFin:", fechaFin);
+        setForm({
+          nombre: torneo.nombre,
+          deporte: torneo.deporte?.toLowerCase(),
+          formato: torneo.formato?.toLowerCase() as "liga" | "eliminacion",
+          fechaInicio,
+          fechaFin,
+          activo: torneo.activo,
+        });
+      })
       .catch(() => setError("Error al cargar el torneo"))
       .finally(() => setLoadingData(false));
   }, [id]);
