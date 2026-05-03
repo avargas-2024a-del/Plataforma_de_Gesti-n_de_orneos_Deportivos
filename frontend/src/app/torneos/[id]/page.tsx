@@ -5,6 +5,15 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { torneosService, Torneo } from "@/services";
 
+const formatearFecha = (fecha: string) => {
+  if (!fecha) return "";
+  return new Date(fecha).toLocaleDateString("es-CO", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
+
 export default function TorneoDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -45,8 +54,8 @@ export default function TorneoDetailPage() {
       <div className="bg-white border rounded-lg p-6 space-y-3 mb-6">
         <p><span className="font-medium">Deporte:</span> {torneo.deporte}</p>
         <p><span className="font-medium">Formato:</span> {torneo.formato}</p>
-        <p><span className="font-medium">Fecha Inicio:</span> {torneo.fechaInicio}</p>
-        <p><span className="font-medium">Fecha Fin:</span> {torneo.fechaFin}</p>
+        <p><span className="font-medium">Fecha Inicio:</span> {formatearFecha(torneo.fechaInicio)}</p>
+        <p><span className="font-medium">Fecha Fin:</span> {formatearFecha(torneo.fechaFin)}</p>
         <p>
           <span className="font-medium">Estado:</span>{" "}
           <span className={`px-2 py-1 rounded text-sm ${torneo.activo ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
